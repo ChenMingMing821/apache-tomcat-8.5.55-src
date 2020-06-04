@@ -9,8 +9,6 @@
 
 步骤一：官网下载tomcat源代码（https://tomcat.apache.org/download-80.cgi），解压缩得到目录。
 
-![image-20200604141100527](C:\Users\tracy.chen\AppData\Roaming\Typora\typora-user-images\image-20200604141100527.png)
-
 步骤二：IDEA新建Maven项目apache-tomcat-8.5.55-src，基于JDK 1.8.171，将解压后的tomcat源码拷贝到该项目下。
 
 步骤三：pom.xml添加maven依赖
@@ -109,12 +107,31 @@
 
 步骤七：访问本地8080端口，发现报错。原因是tomcat中jsp的引擎Jasper并没有初始化，从而无法处理jsp。
 
-![image-20200604212329029](C:\Users\tracy.chen\AppData\Roaming\Typora\typora-user-images\image-20200604212329029.png)
+   报错图片。。。
 
 步骤八：org.apache.catalina.startup.ContextConfig#configureStart中增加如下代码，加载Jasper。
 
-![image-20200604212510363](C:\Users\tracy.chen\AppData\Roaming\Typora\typora-user-images\image-20200604212510363.png)
+```
+protected synchronized void configureStart() {
+    // Called from StandardContext.start()
 
-步骤九：重新访问。
+    if (log.isDebugEnabled()) {
+        log.debug(sm.getString("contextConfig.start"));
+    }
 
-![image-20200604212540374](C:\Users\tracy.chen\AppData\Roaming\Typora\typora-user-images\image-20200604212540374.png)
+    if (log.isDebugEnabled()) {
+        log.debug(sm.getString("contextConfig.xmlSettings",
+                context.getName(),
+                Boolean.valueOf(context.getXmlValidation()),
+                Boolean.valueOf(context.getXmlNamespaceAware())));
+    }
+
+    webConfig();
+
+    // 初始化jsp解析引擎Jasper
+    context.addServletContainerInitializer(new JasperInitializer(), null);
+    ...
+}
+```
+
+步骤九：重新访问，就能看到tomcat的首页了。
