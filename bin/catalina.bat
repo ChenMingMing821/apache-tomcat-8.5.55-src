@@ -113,6 +113,8 @@ rem                   Example (all one line)
 rem                   set TITLE=Tomcat.Cluster#1.Server#1 [%DATE% %TIME%]
 rem ---------------------------------------------------------------------------
 
+set JAVA_OPTS=-Dfile.encoding=UTF-8
+
 setlocal
 
 rem Suppress Terminate batch job on CTRL+C

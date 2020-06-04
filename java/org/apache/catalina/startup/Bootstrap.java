@@ -428,10 +428,7 @@ public final class Bootstrap {
 
 
     /**
-     * Main method and entry point when starting Tomcat via the provided
-     * scripts.
-     *
-     * @param args Command line arguments to be processed
+     * Bootstrap.main()?tomcat?????????startup.bat/startup.sh?????????
      */
     public static void main(String args[]) {
 

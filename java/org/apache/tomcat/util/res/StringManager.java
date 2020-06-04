@@ -167,6 +167,14 @@ public class StringManager {
             value = key;
         }
 
+        // Tomcat启动乱码，原因在于tomcat中设置的编码默认是ISO-8859-1，在此处进行转码
+        try {
+            value = new String(value.getBytes("ISO-8859-1"),"UTF-8");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
         MessageFormat mf = new MessageFormat(value);
         mf.setLocale(locale);
         return mf.format(args, new StringBuffer(), null).toString();
